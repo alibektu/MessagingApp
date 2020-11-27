@@ -14,6 +14,7 @@ const useStyles = makeStyles({
 export default function MessageBox({ user, message }) {
     const classes = useStyles()
     const isUserMsg = user.id === message.userId
+
     return (
         <Box
             display='flex'

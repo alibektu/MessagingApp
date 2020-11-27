@@ -11,7 +11,7 @@ const useStyles = makeStyles({
     },
 })
 
-export default function User({ user, onClick }) {
+export default function User({ onClick, user }) {
     const classes = useStyles()
 
     const handleClick = () => {

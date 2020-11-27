@@ -29,22 +29,24 @@ const useStyles = makeStyles({
     }
 })
 
-export default function ChatWindow({ user, chatHistory, onMessageSend }) {
+const ENTER_KEY = 13
+
+export default function ChatWindow({ user, chatHistory, onSendMessage }) {
     const classes = useStyles()
     const [text, setText] = useState('')
-    
-    const handleChange = (event) => {
-        setText(event.target.value)
-    };
 
     useEffect(() => {
         const messageBoxDiv = document.getElementById("MessageBox");
         messageBoxDiv.scrollTop = messageBoxDiv.scrollHeight;
     })
 
-    const handleMessageSend = (event) => {
-        if (event.which === 13) {
-            onMessageSend(text)
+    const handleChangeText = (event) => {
+        setText(event.target.value)
+    };
+
+    const handleSendMessage = (event) => {
+        if (event.which === ENTER_KEY) {
+            onSendMessage(text)
             setText('')
         }
     }
@@ -62,8 +64,8 @@ export default function ChatWindow({ user, chatHistory, onMessageSend }) {
             <TextField
                 InputProps={{ disableUnderline: true }}
                 className={classes.textField}
-                onChange={handleChange}
-                onKeyDown={handleMessageSend}
+                onChange={handleChangeText}
+                onKeyDown={handleSendMessage}
                 value={text}
             />
         </Paper>

@@ -20,19 +20,19 @@ export default function App() {
     const [user, setUserId] = useState(users['1']);
     const [chatHistory, setChatHistory] = useState(userMessageHistory['1']);
 
-    const handleUserSelect = (userId) => {
+    const handleSelectUser = (userId) => {
         setUserId(users[userId]);
         setChatHistory(userMessageHistory[userId])
     }
 
-    const handleMessageSend = (msg) => {
+    const handleSendMessage = (msg) => {
         userMessageHistory[user.id].push({userId: user.id, msg})
     }
 
     return (
         <Box display='flex'>
-            <UserList users={users} onUserSelect={handleUserSelect}/>
-            <ChatWindow user={user} chatHistory={chatHistory} onMessageSend={handleMessageSend}/>
+            <UserList users={users} onSelectUser={handleSelectUser}/>
+            <ChatWindow user={user} chatHistory={chatHistory} onSendMessage={handleSendMessage}/>
         </Box>
     )
 }

@@ -15,7 +15,7 @@ const useStyles = makeStyles({
     },
 })
 
-export default function UserList({ users, onUserSelect }) {
+export default function UserList({ users, onSelectUser }) {
     const classes = useStyles()
 
     return (
@@ -27,7 +27,7 @@ export default function UserList({ users, onUserSelect }) {
                 {_.chain(users)
                     .keys()
                     .map(userId => (
-                        <User key={userId} onClick={onUserSelect} user={users[userId]}/>
+                        <User key={userId} onClick={onSelectUser} user={users[userId]}/>
                     ))
                     .value()}
             </List>
