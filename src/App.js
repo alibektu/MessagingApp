@@ -1,25 +1,38 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react'
+import { Box} from '@material-ui/core'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import UserList from './containers/UserList'
+import ChatWindow from './containers/ChatWindow'
+
+const users = {
+    '1': {name: 'Bob', id: '1'},
+    '2': {name: 'Tony', id: '2'},
+    '3': {name: 'Christy', id: '3'}
 }
 
-export default App;
+const userMessageHistory = {
+    '1': [{userId: '1', msg: 'Hello'}, {userId: '2', msg: 'Hi'}],
+    '2': [{userId: '1', msg: 'Hello'}, {userId: '2', msg: 'Hi'}],
+    '3': []
+}
+
+export default function App() {
+    const [user, setUserId] = useState(users['1']);
+    const [chatHistory, setChatHistory] = useState(userMessageHistory['1']);
+
+    const handleUserSelect = (userId) => {
+        setUserId(users[userId]);
+        setChatHistory(userMessageHistory[userId])
+    }
+
+    const handleMessageSend = (msg) => {
+        userMessageHistory[user.id].push({userId: user.id, msg})
+    }
+
+    return (
+        <Box display='flex'>
+            <UserList users={users} onUserSelect={handleUserSelect}/>
+            <ChatWindow user={user} chatHistory={chatHistory} onMessageSend={handleMessageSend}/>
+        </Box>
+    )
+}
