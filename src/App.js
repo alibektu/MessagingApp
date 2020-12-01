@@ -1,38 +1,50 @@
 import React, { useState } from 'react'
+import _ from 'lodash'
 import { Box} from '@material-ui/core'
 
-import UserList from './containers/UserList'
+import ChatList from './containers/ChatList'
 import ChatWindow from './containers/ChatWindow'
-
-const users = {
-    '1': {name: 'Bob', id: '1'},
-    '2': {name: 'Tony', id: '2'},
-    '3': {name: 'Christy', id: '3'}
-}
-
-const userMessageHistory = {
-    '1': [{userId: '1', msg: 'Hello'}, {userId: '2', msg: 'Hi'}],
-    '2': [{userId: '1', msg: 'Hello'}, {userId: '2', msg: 'Hi'}],
-    '3': []
-}
+import { users, userChatsHistory } from './db'
 
 export default function App() {
-    const [user, setUserId] = useState(users['1']);
-    const [chatHistory, setChatHistory] = useState(userMessageHistory['1']);
+    const [chatId, setChatId] = useState('1')
+    const [userChats, setUserChats] = useState(userChatsHistory[chatId])
 
-    const handleSelectUser = (userId) => {
-        setUserId(users[userId]);
-        setChatHistory(userMessageHistory[userId])
+    const handleSelectChat = (id) => {
+        setChatId(id)
+        setUserChats(userChatsHistory[id])
+        userChatsHistory[chatId] = userChats
     }
 
-    const handleSendMessage = (msg) => {
-        userMessageHistory[user.id].push({userId: user.id, msg})
+    const handleSendMessage = () => {
+        userChatsHistory[chatId].chatHistory.push({
+            userId: userChatsHistory[chatId].userId,
+            msg: userChatsHistory[chatId].draft
+        })
+        userChatsHistory[chatId].draft=''
+        setUserChats({...userChats, draft: ''})
+    }
+
+    const handleChangeText = (text) => {
+        setUserChats({...userChats, draft: text})
+    }
+
+    const getTitle = () => {
+        return _.chain(userChatsHistory[chatId].userIds)
+            .map(userId => users[userId].name)
+            .join(', ')
+            .value()
     }
 
     return (
         <Box display='flex'>
-            <UserList users={users} onSelectUser={handleSelectUser}/>
-            <ChatWindow user={user} chatHistory={chatHistory} onSendMessage={handleSendMessage}/>
+            <ChatList onSelectChat={handleSelectChat}/>
+            <ChatWindow
+                onChangeText={handleChangeText}
+                onSendMessage={handleSendMessage}
+                title={getTitle()}
+                userChatHistory={userChats}
+            />
         </Box>
     )
 }

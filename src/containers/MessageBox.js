@@ -11,9 +11,9 @@ const useStyles = makeStyles({
     }
 })
 
-export default function MessageBox({ user, message }) {
+export default function MessageBox({ userId, message }) {
     const classes = useStyles()
-    const isUserMsg = user.id === message.userId
+    const isUserMsg = userId === message.userId
 
     return (
         <Box
@@ -27,7 +27,7 @@ export default function MessageBox({ user, message }) {
                     borderBottomRightRadius: isUserMsg? 0 : 16,
                 }}
             >
-                {message.msg}
+                {message.userId + " ~ " + message.msg}
             </Card>
         </Box>
     )

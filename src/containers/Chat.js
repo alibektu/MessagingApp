@@ -11,11 +11,11 @@ const useStyles = makeStyles({
     },
 })
 
-export default function User({ onClick, user }) {
+export default function Chat({ chatId, onClick, title }) {
     const classes = useStyles()
 
     const handleClick = () => {
-        onClick(user.id)
+        onClick(chatId)
     }
 
     return (
@@ -23,7 +23,7 @@ export default function User({ onClick, user }) {
           <ListItemIcon>
             <PersonIcon />
           </ListItemIcon>
-          <ListItemText primary={user.name} />
+          <ListItemText primary={title} />
           <Divider />
         </ListItem>
     )

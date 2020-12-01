@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { Paper, Box, Typography, TextField } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 
@@ -31,9 +31,8 @@ const useStyles = makeStyles({
 
 const ENTER_KEY = 13
 
-export default function ChatWindow({ user, chatHistory, onSendMessage }) {
+export default function ChatWindow({ onChangeText, onSendMessage, title, userChatHistory }) {
     const classes = useStyles()
-    const [text, setText] = useState('')
 
     useEffect(() => {
         const messageBoxDiv = document.getElementById("MessageBox");
@@ -41,24 +40,23 @@ export default function ChatWindow({ user, chatHistory, onSendMessage }) {
     })
 
     const handleChangeText = (event) => {
-        setText(event.target.value)
+        onChangeText(event.target.value)
     };
 
     const handleSendMessage = (event) => {
         if (event.which === ENTER_KEY) {
-            onSendMessage(text)
-            setText('')
+            onSendMessage()
         }
     }
 
     return (
         <Paper elevation={3} className={classes.root} >
             <Box className={classes.title}>
-                <Typography color='primary' variant='h6'>{user.name}</Typography>
+                <Typography color='primary' variant='h6'>{title}</Typography>
             </Box>
             <Box overflow='auto' height='85%' id='MessageBox'>
-                {!!chatHistory && chatHistory.map((msg, index) => (
-                    <MessageBox key={index} user={user} message={msg} />
+                {!!userChatHistory.chatHistory && userChatHistory.chatHistory.map((msg, index) => (
+                    <MessageBox key={index} userId={userChatHistory.userId} message={msg} />
                 ))}
             </Box>
             <TextField
@@ -66,7 +64,7 @@ export default function ChatWindow({ user, chatHistory, onSendMessage }) {
                 className={classes.textField}
                 onChange={handleChangeText}
                 onKeyDown={handleSendMessage}
-                value={text}
+                value={userChatHistory.draft}
             />
         </Paper>
     )
